@@ -1,4 +1,4 @@
-# Plex Fran
+# UserPlex
 
 Administrador personal de cuentas de Plex, adaptable a iPhone y escritorio. Alta y edición de cuentas, gestión de personas, asignación y liberación, búsqueda, filtros, contraseñas ocultas con visualización temporal y respaldo cifrado.
 
