@@ -29,3 +29,15 @@ Supabase SDK vendorizado: `@supabase/supabase-js` 2.105.0 (MIT). No requiere com
 Para desplegar la función: `supabase functions deploy plex-fran --no-verify-jwt` tras autenticar el CLI y vincular el proyecto correcto. El esquema se conserva en `database/schema.sql`. No vuelvas a importar datos iniciales: ya están cifrados en la base y no se distribuyen como fixtures.
 
 Pruebas de seguridad y CRUD: `node --test tests/security.test.mjs`. El backend compilado para esas pruebas se genera desde TypeScript con esbuild; no contiene credenciales reales.
+
+## Versión 2
+
+- Diferencia explícita entre Usuario (Full Name) y Usuario Plex (username).
+- Asignación desde cuenta a Full Name existente o nuevo, con guardado atómico y creación automática de la persona. Los cambios de Full Name se propagan a sus cuentas de forma atómica.
+- Nueva sección Tabla editable, también disponible en iPhone mediante desplazamiento horizontal.
+- Valores sugeridos para nuevas cuentas, editables; también se puede generar una contraseña aleatoria.
+- Notas privadas cifradas con categorías y respaldo cifrado que incluye notas.
+- Service worker de red solamente: no guarda datos privados ni API. Comprueba versiones al abrir y al volver al primer plano; respeta campos sin guardar. Para una publicación futura, actualiza version.json y la meta app-version, además de los identificadores de app.js/style.css. El worker evita las cachés HTTP al abrir la app.
+- Registro interno plex_fran_activity con fecha y hora. Una tarea diaria autorizada de ChatGPT actualiza ese registro mediante el conector Supabase, sin datos privados. La pausa del plan gratuito depende de Supabase: esta actividad reduce el riesgo, no es una garantía. No requiere permisos públicos sobre la tabla ni un endpoint anónimo.
+
+Pruebas completas: npm ci && npm test. jsdom es una dependencia de desarrollo, no se envía al navegador. El esquema adicional está en database/upgrade-v2.sql.
