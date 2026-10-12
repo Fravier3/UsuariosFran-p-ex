@@ -1,0 +1,6 @@
+.openai/
+node_modules/
+.env*
+*.tar.gz
+edge/
+dist/
