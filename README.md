@@ -6,7 +6,7 @@ Administrador personal de cuentas de Plex, adaptable a iPhone y escritorio. Alta
 
 Abre GitHub Pages y selecciona **Configurar mi acceso por primera vez** después de escribir tu contraseña. Confirma tu correo y entra. El servidor solo permite la cuenta administradora verificada. No hay registro de visitantes con acceso al panel.
 
-En iPhone, guarda el acceso en Contraseñas. Toca el campo Contraseña para autorrellenar mediante Face ID. Es una función de iOS; no un sistema biométrico propio ni una passkey implementada por la app.
+El botón principal solicita una clave de acceso (WebAuthn) y la verificación de iOS con Face ID o código. Entra con contraseña una vez y activa Face ID en este iPhone para registrarla. La contraseña permanece como alternativa. El navegador puede guardar únicamente el identificador público de la clave para seleccionar el autenticador de este dispositivo; nunca la clave privada, contraseñas ni tokens. Supabase Passkeys es una función experimental.
 
 ## Arquitectura y seguridad
 
@@ -14,7 +14,7 @@ La web estática se publica desde `docs/`. La base y Auth pertenecen exclusivame
 
 Las tablas tienen RLS y niegan acceso directo a `anon` y `authenticated`. La función usa la clave de servicio disponible únicamente en el entorno de Supabase. Cifra los registros mediante AES-256-GCM, con IV aleatorio y una clave derivada de la clave de servicio. Ninguna contraseña de las cuentas está en este repositorio. Los índices de correo/nombre contienen hashes; las cuentas tienen números únicos.
 
-Los tokens y registros permanecen en memoria, no en localStorage. La app oculta las contraseñas a los 20 segundos y se bloquea tras 10 minutos de inactividad, al salir de la página o tras 30 segundos en segundo plano. El portapapeles es responsabilidad del sistema al copiar una contraseña.
+Los tokens y registros permanecen en memoria, no en localStorage. Solo se recuerda el identificador público de la clave de acceso. La app oculta las contraseñas a los 20 segundos y se bloquea tras 10 minutos de inactividad, al salir de la página o tras 30 segundos en segundo plano. El portapapeles es responsabilidad del sistema al copiar una contraseña.
 
 La función valida la sesión por sí misma; se despliega con `verify_jwt=false` porque utiliza claves publicables modernas y una verificación explícita con Auth. No existe acceso anónimo a los datos. Los administradores del proyecto Supabase conservan control administrativo.
 
